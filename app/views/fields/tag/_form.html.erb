@@ -15,7 +15,7 @@ By default, the attribute is rendered as an input with autonumeric enabled.
   <%= f.label field.attribute %>
 </div>
 <div class="field-unit__field">
-  <%= f.select(field.attribute_key, nil, {}, multiple: true) do %>
+  <%= f.select(field.attribute, nil, {}, { multiple: true, class: 'administrate-tag-input' }) do %>
     <%= options_for_select(field.associated_resource_options, field.selected_options) %>
   <% end %>
 </div>

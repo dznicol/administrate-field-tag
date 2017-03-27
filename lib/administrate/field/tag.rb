@@ -1,6 +1,5 @@
 require "administrate/field/base"
 require "rails"
-require "autonumeric-rails"
 
 include ActionView::Helpers::NumberHelper
 
@@ -18,14 +17,14 @@ module Administrate
             dashboard.form_attributes.each do |name|
               attribute_type = dashboard.attribute_type_for(name)
               if attribute_type == Administrate::Field::Tag
-                tags = params[resource_name].delete(name)
+                tags = params[resource_name].delete(name).reject(&:blank?)
                 params[resource_name]["#{name.to_s.singularize}_ids"] = tags.map do |tag|
-                  Tag.find_or_create_by(name: tag).id
+                  Tag.find_or_create_by(name: tag.humanize).id
                 end
               elsif attribute_type.is_a?(Administrate::Field::Deferred) and attribute_type.deferred_class == Administrate::Field::Tag
-                tags = params[resource_name].delete(name)
+                tags = params[resource_name].delete(name).reject(&:blank?)
                 params[resource_name]["#{name.to_s.singularize}_ids"] = tags.map do |tag|
-                  attribute_type.options.fetch(:class_name, "Tag").constantize.find_or_create_by(attribute_type.options.fetch(:attribute_name, :name) => tag).id
+                  attribute_type.options.fetch(:class_name, "Tag").constantize.find_or_create_by(attribute_type.options.fetch(:attribute_name, :name) => tag.humanize).id
                 end
               end
             end
@@ -37,12 +36,20 @@ module Administrate
         { "#{attribute.to_s.singularize}_ids".to_sym => [] }
       end
 
+      def attribute_key
+        permitted_attribute.keys.first
+      end
+
       def associated_resource_options
         associated_class.all.map { |resource| resource.send(attribute_name) }
       end
 
       def selected_options
         data && data.map { |object| object.send(attribute_name) }
+      end
+
+      def permitted_attribute
+        self.class.permitted_attribute(attribute)
       end
 
       def to_s
