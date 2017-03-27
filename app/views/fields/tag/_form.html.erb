@@ -1,0 +1,21 @@
+<%#
+# Currency Form Partial
+This partial renders an currency attribute
+to be displayed on a resource's form page.
+By default, the attribute is rendered as an input with autonumeric enabled.
+## Local variables:
+- `f`:
+  A Rails form generator, used to help create the appropriate input fields.
+- `field`:
+  An instance of Administrate::Field::Currency.
+  A wrapper around a decimal field pulled from the database.
+%>
+
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+<div class="field-unit__field">
+  <%= f.select(field.attribute_key, nil, {}, multiple: true) do %>
+    <%= options_for_select(field.associated_resource_options, field.selected_options) %>
+  <% end %>
+</div>
