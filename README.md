@@ -2,6 +2,14 @@
 
 Adds a Tag field to [Administrate].
 
+It's intended as a way to organize tags without needing a second TagDashboard to create and/or manage them.
+
+It will automatically create, add and remove tags ( or any other attribute that functions similarly ).
+
+It will never destroy tags to avoid potentially breaking an application where tags are referenced in unforeseen ways.
+
+It uses [Selectize] to provide tag inputs.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -17,7 +25,6 @@ And then execute:
 ## Usage
 
 Set your ATTRIBUTE_TYPE to Field::Tag.
-
 
 Tries to get the options through i18n if not passed along. So [rails-i18n] would be helpful here.
 
@@ -39,3 +46,4 @@ ATTRIBUTE_TYPES = {
 Needs jQuery and expects it to already be loaded.
 
 [Administrate]: https://github.com/thoughtbot/administrate
+[Selectize]: https://selectize.github.io/selectize.js/
