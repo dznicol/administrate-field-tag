@@ -1,6 +1,9 @@
 require "administrate/field/base"
 require "rails"
 
+gem_dir = Gem::Specification.find_by_name("administrate").gem_dir
+require "#{gem_dir}/app/controllers/administrate/application_controller"
+
 include ActionView::Helpers::NumberHelper
 
 module Administrate
